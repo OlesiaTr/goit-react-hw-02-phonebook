@@ -13,30 +13,34 @@ import { ContactForm } from './ContactForm';
 import { ContactList } from './ContactList';
 import { Filter } from './Filter';
 
+// Variables
+const initialContacts = [
+  { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+  { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+  { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+  { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+];
+
 export class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contacts: initialContacts,
     filter: '',
   };
 
   addContact = contact => {
-    const inContacts = this.state.contacts.find(
+    const inContacts = this.state.contacts.some(
       ({ name }) => name.toLowerCase() === contact.name.toLowerCase()
     );
 
-    if (inContacts) {
-      alert(`${contact.name} is already added to your contacts`);
-      return;
+    if (!inContacts) {
+      this.setState(prevState => ({
+        contacts: [...prevState.contacts, { id: nanoid(), ...contact }],
+      }));
+
+      return true;
     }
 
-    this.setState(prevState => ({
-      contacts: [...prevState.contacts, { id: nanoid(), ...contact }],
-    }));
+    alert(`${contact.name} is already added to your contacts`);
   };
 
   deleteContact = id => {

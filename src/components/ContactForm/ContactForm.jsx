@@ -22,16 +22,14 @@ export class ContactForm extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.addContact(this.state);
-    this.resetForm();
+    if (this.props.addContact(this.state)) this.resetForm();
   };
 
-  resetForm = () => {
+  resetForm = () =>
     this.setState({
       name: '',
       number: '',
     });
-  };
 
   handleChange = e => {
     const { name, value } = e.currentTarget;
